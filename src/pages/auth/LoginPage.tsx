@@ -110,6 +110,7 @@ const LoginPage: React.FC = () => {
               id="email"
               type="email"
               placeholder="example@gmail.com"
+              autoComplete='email'
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="pl-10 bg-card border-border/50 focus:border-primary"
@@ -127,6 +128,7 @@ const LoginPage: React.FC = () => {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete='current-password'
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}

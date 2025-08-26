@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Оптимизации для SEO и производительности
     rollupOptions: {
       output: {
         manualChunks: {
@@ -30,7 +29,6 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
-    // Минификация для лучшей производительности
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -38,10 +36,8 @@ export default defineConfig(({ mode }) => ({
         drop_debugger: mode === 'production',
       },
     },
-    // Генерация source maps для отладки
     sourcemap: mode === 'development',
   },
-  // Оптимизации для разработки
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   },

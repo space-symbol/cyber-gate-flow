@@ -35,17 +35,16 @@ const HomePage: React.FC = () => {
               Безопасное подключение, простое управление и полный контроль над вашими устройствами в одной платформе.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 h-auto">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center h-14">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-full group">
                 <Link to="/auth/register">
                   Начать бесплатно
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
                 </Link>
               </Button>
-              
-              <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg px-8 py-6 h-auto">
+              <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-full group">
                 <Link to="/auth/login">
-                  <Play className="mr-2 w-5 h-5" />
+                  <Play className="w-6 h-6 transition-transform group-hover:scale-105" />
                   Войти в систему
                 </Link>
               </Button>
@@ -109,15 +108,16 @@ const HomePage: React.FC = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Присоединяйтесь к тысячам пользователей, которые уже доверяют CyberGate Flow для защиты своей приватности.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 h-auto">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center h-14">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-full group">
               <Link to="/auth/register">
                 Создать аккаунт
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg px-8 py-6 h-auto">
+            <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-full group">
               <Link to="/auth/login">
+                <Play className="w-6 h-6 transition-transform group-hover:scale-105" />
                 Войти в систему
               </Link>
             </Button>

@@ -47,7 +47,7 @@ class ApiClient {
     };
 
     if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`;
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
 
     const response = await fetch(url, {
@@ -84,7 +84,7 @@ class ApiClient {
 
   // Authentication methods
   async login(data: LoginRequest): Promise<LoginResponse> {
-    const response = await this.request<LoginResponse>('/api/v1/auth/login', {
+    const response = await this.request<LoginResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -95,45 +95,45 @@ class ApiClient {
   }
 
   async register(data: RegisterRequest): Promise<RegisterResponse> {
-    return this.request<RegisterResponse>('/api/v1/auth/register', {
+    return this.request<RegisterResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async getUserProfile(): Promise<UserInfo> {
-    return this.request<UserInfo>('/api/v1/user/profile');
+    return this.request<UserInfo>('/user/profile');
   }
 
   // Device methods
   async getDevices(): Promise<DevicesResponse> {
-    return this.request<DevicesResponse>('/api/v1/devices');
+    return this.request<DevicesResponse>('/devices');
   }
 
   async addDevice(): Promise<AddDeviceResponse> {
-    return this.request<AddDeviceResponse>('/api/v1/devices', {
+    return this.request<AddDeviceResponse>('/devices', {
       method: 'POST',
     });
   }
 
   async getDevice(id: number): Promise<DeviceInfo> {
-    return this.request<DeviceInfo>(`/api/v1/devices/${id}`);
+    return this.request<DeviceInfo>(`/devices/${id}`);
   }
 
   async deleteDevice(id: number): Promise<{ message: string }> {
-    return this.request<{ message: string }>(`/api/v1/devices/${id}`, {
+    return this.request<{ message: string }>(`/devices/${id}`, {
       method: 'DELETE',
     });
   }
 
   async getDeviceKey(id: number): Promise<{ access_url: string }> {
-    return this.request<{ access_url: string }>(`/api/v1/devices/${id}/key`);
+    return this.request<{ access_url: string }>(`/devices/${id}/key`);
   }
 
   // Payment methods
   async payDevice(id: number, months: number): Promise<PaymentResponse> {
     const data: PaymentRequest = { device_id: id, months };
-    return this.request<PaymentResponse>(`/api/v1/devices/${id}/pay`, {
+    return this.request<PaymentResponse>(`/devices/${id}/pay`, {
       method: 'POST',
       body: JSON.stringify(data),
     });

@@ -107,6 +107,7 @@ const RegisterPage: React.FC = () => {
             <Input
               id="email"
               type="email"
+              autoComplete='email'
               placeholder="example@gmail.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -125,6 +126,7 @@ const RegisterPage: React.FC = () => {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete='new-password'
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -150,6 +152,7 @@ const RegisterPage: React.FC = () => {
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               id="confirmPassword"
+              autoComplete='new-password'
               type={showConfirmPassword ? 'text' : 'password'}
               placeholder="••••••••"
               value={formData.confirmPassword}
