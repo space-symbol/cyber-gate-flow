@@ -4,20 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import { Shield, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Shield, Mail, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useLogin, useRegister } from '@/hooks/use-api';
+import type { UserInfo } from '@/lib/api/types';
 
 interface AuthModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onAuthSuccess: (user: { email: string; name: string }) => void;
+  onAuthSuccess: (user: UserInfo) => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onOpenChange, onAuthSuccess }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('signin');
-  const { toast } = useToast();
+  const [otp, setOtp] = useState('');
+  const [showOtp, setShowOtp] = useState(false);
+  
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
 
   const [signInData, setSignInData] = useState({
     email: '',
@@ -33,58 +37,49 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onOpenChange, onAuthSucce
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    if (!signInData.email || !signInData.password) {
+      return;
+    }
 
-    // Mock authentication
-    setTimeout(() => {
-      if (signInData.email && signInData.password) {
-        const user = {
-          email: signInData.email,
-          name: signInData.email.split('@')[0],
-        };
-        onAuthSuccess(user);
-        onOpenChange(false);
-        toast({
-          title: "Добро пожаловать!",
-          description: "Вы успешно вошли в систему",
-        });
-      } else {
-        toast({
-          title: "Ошибка входа",
-          description: "Проверьте правильность введенных данных",
-          variant: "destructive",
-        });
+    const loginData = {
+      email: signInData.email,
+      pass: signInData.password,
+      ...(otp && { otp })
+    };
+
+    try {
+      const result = await loginMutation.mutateAsync(loginData);
+      onAuthSuccess(result.user);
+      onOpenChange(false);
+      setOtp('');
+      setShowOtp(false);
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'OTP_REQUIRED') {
+        setShowOtp(true);
       }
-      setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    if (!signUpData.email || !signUpData.password || signUpData.password !== signUpData.confirmPassword) {
+      return;
+    }
 
-    // Mock registration
-    setTimeout(() => {
-      if (signUpData.name && signUpData.email && signUpData.password === signUpData.confirmPassword) {
-        const user = {
-          email: signUpData.email,
-          name: signUpData.name,
-        };
-        onAuthSuccess(user);
-        onOpenChange(false);
-        toast({
-          title: "Регистрация завершена!",
-          description: "Добро пожаловать в VPN сервис",
-        });
-      } else {
-        toast({
-          title: "Ошибка регистрации",
-          description: "Проверьте правильность введенных данных",
-          variant: "destructive",
-        });
-      }
-      setIsLoading(false);
-    }, 1500);
+    const registerData = {
+      email: signUpData.email,
+      pass: signUpData.password,
+    };
+
+    try {
+      const result = await registerMutation.mutateAsync(registerData);
+      onAuthSuccess(result.user);
+      onOpenChange(false);
+    } catch (error) {
+      // Error handling is done in the hook
+    }
   };
 
   return (
@@ -152,12 +147,32 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onOpenChange, onAuthSucce
                 </div>
               </div>
 
+              {showOtp && (
+                <div className="space-y-2">
+                  <Label htmlFor="signin-otp" className="text-foreground">
+                    OTP код
+                  </Label>
+                  <div className="relative">
+                    <AlertCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      id="signin-otp"
+                      type="text"
+                      placeholder="123456"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      className="pl-10 bg-secondary/30 border-border/50"
+                      required
+                    />
+                  </div>
+                </div>
+              )}
+
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={loginMutation.isPending}
                 className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
               >
-                {isLoading ? 'Вход в систему...' : 'Войти'}
+                {loginMutation.isPending ? 'Вход в систему...' : 'Войти'}
               </Button>
             </form>
           </TabsContent>
@@ -245,10 +260,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onOpenChange, onAuthSucce
 
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={registerMutation.isPending}
                 className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
               >
-                {isLoading ? 'Создание аккаунта...' : 'Создать аккаунт'}
+                {registerMutation.isPending ? 'Создание аккаунта...' : 'Создать аккаунт'}
               </Button>
             </form>
           </TabsContent>

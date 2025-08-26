@@ -1,239 +1,144 @@
-import React, { useState, useEffect } from 'react';
-import DeviceCard, { Device } from './DeviceCard';
-import AddDeviceButton from './AddDeviceButton';
+import React, { useState, useMemo } from 'react';
 import UserProfile from './UserProfile';
 import AuthModal from './AuthModal';
-import { Button } from '@/components/ui/button';
-import { RefreshCw, Shield, Users } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import HeaderWidget from './widgets/HeaderWidget';
+import StatsWidget from './widgets/StatsWidget';
+import ActionPanelWidget from './widgets/ActionPanelWidget';
+import WelcomeWidget from './widgets/WelcomeWidget';
+import EmptyStateWidget from './widgets/EmptyStateWidget';
+import DeviceGridWidget from './widgets/DeviceGridWidget';
+import SearchFilterWidget from './widgets/SearchFilterWidget';
+import { useUser, useDevices, useLogout } from '@/hooks/use-api';
+import type { UserInfo } from '@/lib/api/types';
+import { Button } from './ui/button';
+import { Search, X } from 'lucide-react';
+import type { DeviceInfo } from '@/lib/api/types';
 
 const DeviceList: React.FC = () => {
-  const [devices, setDevices] = useState<Device[]>([]);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [user, setUser] = useState<{ email: string; name: string } | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { toast } = useToast();
+  const [filteredDevices, setFilteredDevices] = useState<DeviceInfo[]>([]);
+  
+  const { data: user, isLoading: userLoading } = useUser();
+  const { data: devicesData, isLoading: devicesLoading, refetch: refetchDevices } = useDevices();
+  const logoutMutation = useLogout();
 
-  // Mock initial data
-  const mockDevices: Device[] = [
-    {
-      id: '1',
-      name: 'iPhone 15 Pro',
-      type: 'mobile',
-      status: 'active',
-      token: 'vpn_token_abc123def456ghi789jkl012',
-      lastConnected: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    },
-    {
-      id: '2',
-      name: 'MacBook Air M2',
-      type: 'desktop',
-      status: 'active',
-      token: 'vpn_token_mno345pqr678stu901vwx234',
-      lastConnected: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-    },
-    {
-      id: '3',
-      name: 'iPad Pro 12.9"',
-      type: 'tablet',
-      status: 'deactivated',
-      token: 'vpn_token_yzа567bcd890efg123hij456',
-      lastConnected: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
-    },
-  ];
+  const devices = devicesData?.devices || [];
+  const activeDevices = devices.filter(device => device.status === 'active').length;
+  const totalDevices = devices.length;
 
-  useEffect(() => {
-    // Simulate loading devices if user is authenticated
-    if (user) {
-      setTimeout(() => {
-        setDevices(mockDevices);
-      }, 500);
-    } else {
-      setDevices([]);
-    }
-  }, [user]);
+  // Инициализируем отфильтрованные устройства при изменении devices
+  useMemo(() => {
+    setFilteredDevices(devices);
+  }, [devices]);
 
-  const handleDeleteDevice = (deviceId: string) => {
-    setDevices(devices.filter(device => device.id !== deviceId));
+  const handleDeleteDevice = (deviceId: number) => {
+    // This will be handled by the API hook
   };
 
   const handleDeviceAdded = () => {
-    // Simulate adding new device after payment
-    const newDevice: Device = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: 'Новое устройство',
-      type: 'mobile',
-      status: 'active',
-      token: `vpn_token_${Math.random().toString(36).substr(2, 24)}`,
-      lastConnected: new Date(),
-    };
-    setDevices([...devices, newDevice]);
+    // This will be handled by the API hook
+    refetchDevices();
   };
 
   const handleRefresh = async () => {
-    setIsRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsRefreshing(false);
-      toast({
-        title: "Список обновлен",
-        description: "Статус устройств обновлен",
-      });
-    }, 1000);
+    refetchDevices();
   };
 
-  const handleAuthSuccess = (userData: { email: string; name: string }) => {
-    setUser(userData);
+  const handleAuthSuccess = (userData: UserInfo) => {
+    setShowAuthModal(false);
+    refetchDevices();
   };
 
   const handleSignOut = () => {
-    setUser(null);
-    setDevices([]);
+    logoutMutation.mutate();
   };
 
   const handleSignIn = () => {
     setShowAuthModal(true);
   };
 
-  const activeDevices = devices.filter(device => device.status === 'active').length;
-  const totalDevices = devices.length;
+  const handleFilterChange = (newFilteredDevices: DeviceInfo[]) => {
+    setFilteredDevices(newFilteredDevices);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-hero">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+        {/* Header Section */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
-                <Shield className="w-6 h-6 text-primary-foreground" />
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-6">
+            <HeaderWidget 
+              userEmail={user?.email} 
+              isAuthenticated={!!user} 
+            />
+            
+            {user && (
+              <div className="flex items-center space-x-4">
+                <ActionPanelWidget
+                  onRefresh={handleRefresh}
+                  onDeviceAdded={handleDeviceAdded}
+                  isLoading={devicesLoading}
+                />
+                <UserProfile 
+                  user={user ? { email: user.email, name: user.email.split('@')[0] } : null}
+                  onSignOut={handleSignOut}
+                  onSignIn={handleSignIn}
+                />
               </div>
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">VPN Устройства</h1>
-                <p className="text-muted-foreground">
-                  {user ? `Добро пожаловать, ${user.name}!` : 'Управление подключенными устройствами'}
-                </p>
-              </div>
-            </div>
-            <div className="flex space-x-3 items-center">
-              {user && (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={handleRefresh}
-                    disabled={isRefreshing}
-                    className="border-border/50"
-                  >
-                    <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    Обновить
-                  </Button>
-                  <AddDeviceButton onDeviceAdded={handleDeviceAdded} />
-                </>
-              )}
-              <UserProfile 
-                user={user}
-                onSignOut={handleSignOut}
-                onSignIn={handleSignIn}
-              />
-            </div>
+            )}
           </div>
 
+          {/* Stats Section */}
           {user && (
-            <>
-              {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div className="bg-gradient-card border border-border/50 rounded-lg p-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-success" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">{activeDevices}</p>
-                      <p className="text-sm text-muted-foreground">Активных устройств</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-card border border-border/50 rounded-lg p-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">{totalDevices}</p>
-                      <p className="text-sm text-muted-foreground">Всего устройств</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-card border border-border/50 rounded-lg p-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-warning/10 rounded-full flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-warning" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-foreground">99.9%</p>
-                      <p className="text-sm text-muted-foreground">Время работы</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
+            <StatsWidget
+              activeDevices={activeDevices}
+              totalDevices={totalDevices}
+              uptime="99.9%"
+            />
           )}
         </div>
 
-        {/* Content */}
+        {/* Content Section */}
         {!user ? (
-          // Not authenticated view
-          <div className="text-center py-20">
-            <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-12 h-12 text-primary-foreground" />
-            </div>
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Защитите свои устройства
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Войдите в свой аккаунт или создайте новый, чтобы начать управление 
-              VPN подключениями на всех ваших устройствах
-            </p>
-            <div className="space-y-4">
-              <Button 
-                onClick={handleSignIn}
-                className="bg-gradient-primary hover:opacity-90 transition-opacity text-lg px-8 py-3"
-              >
-                Войти в систему
-              </Button>
-              <div className="text-sm text-muted-foreground">
-                Новый пользователь? Создайте аккаунт в модальном окне входа
-              </div>
-            </div>
-          </div>
+          <WelcomeWidget onSignIn={handleSignIn} />
         ) : (
-          // Authenticated view - Device Grid
           <>
-            {devices.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {devices.map((device) => (
-                  <DeviceCard
-                    key={device.id}
-                    device={device}
-                    onDelete={handleDeleteDevice}
-                  />
-                ))}
+            {/* Search and Filter Section */}
+            {devices.length > 0 && (
+              <SearchFilterWidget
+                devices={devices}
+                onFilterChange={handleFilterChange}
+              />
+            )}
+
+            {/* Devices Section */}
+            {filteredDevices.length > 0 ? (
+              <DeviceGridWidget 
+                devices={filteredDevices} 
+                onDelete={handleDeleteDevice} 
+              />
+            ) : devices.length > 0 ? (
+              <div className="text-center py-16">
+                <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-10 h-10 text-muted-foreground" />
+                </div>
+                <h3 className="text-2xl font-semibold text-foreground mb-3">
+                  Устройства не найдены
+                </h3>
+                <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+                  Попробуйте изменить параметры поиска или фильтрации
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => setFilteredDevices(devices)}
+                  className="hover:bg-primary/10 hover:border-primary/50 transition-colors duration-200"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Сбросить фильтры
+                </Button>
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-8 h-8 text-muted-foreground" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Нет подключенных устройств
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Добавьте свое первое устройство, чтобы начать использовать VPN
-                </p>
-                <AddDeviceButton onDeviceAdded={handleDeviceAdded} />
-              </div>
+              <EmptyStateWidget onDeviceAdded={handleDeviceAdded} />
             )}
           </>
         )}
