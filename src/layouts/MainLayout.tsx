@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { Shield, Download, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
+import { Download, Mail, ExternalLink } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
   const handleDownloadOferta = () => {
@@ -14,23 +14,17 @@ const MainLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Main content */}
       <main className="container mx-auto px-4 py-6 flex-1">
         <Outlet />
       </main>
-
-      {/* Footer */}
       <footer className="bg-card border-t border-border">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Company Info */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-primary-foreground" />
-                </div>
+                <img src='/logo.png' className="w-12 h-12 text-primary-foreground" />
                 <span className="text-xl font-bold text-primary">
-                  CyberGate Flow
+                  VibibayVPN
                 </span>
               </div>
               <p className="text-muted-foreground text-sm leading-relaxed">
@@ -38,7 +32,6 @@ const MainLayout: React.FC = () => {
               </p>
             </div>
 
-            {/* Quick Links */}
             <div className="space-y-4">
               <h4 className="font-semibold text-foreground">Быстрые ссылки</h4>
               <ul className="space-y-2 text-sm">
@@ -78,21 +71,6 @@ const MainLayout: React.FC = () => {
                     <span>Скачать оферту</span>
                   </button>
                 </li>
-                <li>
-                  <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Политика конфиденциальности
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Условия использования
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/support" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Поддержка
-                  </Link>
-                </li>
               </ul>
             </div>
 
@@ -102,15 +80,7 @@ const MainLayout: React.FC = () => {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center space-x-2 text-muted-foreground">
                   <Mail className="w-4 h-4" />
-                  <span>support@cybergateflow.com</span>
-                </li>
-                <li className="flex items-center space-x-2 text-muted-foreground">
-                  <Phone className="w-4 h-4" />
-                  <span>+7 (XXX) XXX-XX-XX</span>
-                </li>
-                <li className="flex items-center space-x-2 text-muted-foreground">
-                  <MapPin className="w-4 h-4" />
-                  <span>Москва, Россия</span>
+                  <a href='https://t.me/yamillion33' target='_blank'>https://t.me/yamillion33</a>
                 </li>
               </ul>
             </div>
@@ -120,20 +90,11 @@ const MainLayout: React.FC = () => {
           <div className="border-t border-border mt-8 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-sm text-muted-foreground">
-                © 2025 CyberGate Flow. Все права защищены.
+                © 2025 VibibayVPN. Все права защищены.
               </p>
               <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                 <a
-                  href="https://github.com/cybergateflow"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground transition-colors flex items-center space-x-1"
-                >
-                  <span>GitHub</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-                <a
-                  href="https://t.me/cybergateflow"
+                  href="https://t.me/VibibayVPNBot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-foreground transition-colors flex items-center space-x-1"

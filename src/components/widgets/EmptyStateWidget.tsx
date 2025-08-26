@@ -68,7 +68,7 @@ const EmptyStateWidget: React.FC<EmptyStateWidgetProps> = ({ onDeviceAdded }) =>
           initial="initial"
           animate="float"
         >
-          <Shield className="w-16 h-16 text-primary" />
+          <img src='/logo.png' className="w-16 h-16 text-primary" />
 
           <motion.div
             className="absolute -top-6 right-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center"

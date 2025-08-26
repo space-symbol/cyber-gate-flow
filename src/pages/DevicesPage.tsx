@@ -8,6 +8,7 @@ import LoadingWidget from '@/components/widgets/LoadingWidget';
 import ErrorWidget from '@/components/widgets/ErrorWidget';
 import SEOHead from '@/components/SEOHead';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { SEO_CONSTANTS } from '@/lib/seo-constants';
 import type { DeviceInfo } from '@/lib/api/types';
 
 const DevicesPage: React.FC = () => {
@@ -41,10 +42,10 @@ const DevicesPage: React.FC = () => {
   return (
     <>
       <SEOHead 
-        title="Управление устройствами - CyberGate Flow"
-        description="Управляйте всеми вашими VPN устройствами в одном месте. Добавляйте новые устройства, контролируйте статус подключений и настройки безопасности."
-        keywords="VPN устройства, управление, подключения, безопасность, настройки"
-        url="https://cybergateflow.com/devices"
+        title={SEO_CONSTANTS.PAGES.DEVICES.title}
+        description={SEO_CONSTANTS.PAGES.DEVICES.description}
+        keywords={SEO_CONSTANTS.PAGES.DEVICES.keywords}
+        url={SEO_CONSTANTS.PAGES.DEVICES.url}
       />
       <div className="space-y-8">
         <Breadcrumbs />

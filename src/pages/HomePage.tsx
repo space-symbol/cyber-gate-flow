@@ -1,17 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Lock, Zap, Globe, Users, ArrowRight, Play, CheckCircle, Server, ShieldCheck, Zap as ZapIcon } from 'lucide-react';
+import { ArrowRight, Play, Server, ShieldCheck, Zap as ZapIcon } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
+import { SEO_CONSTANTS } from '@/lib/seo-constants';
+import Telegram from '../components/icons/telegram.svg?react'
 
 const HomePage: React.FC = () => {
   return (
     <>
       <SEOHead 
-        title="CyberGate Flow - Безопасное управление VPN устройствами"
-        description="Современная платформа для управления VPN устройствами, подписками и безопасными подключениями. Максимальная безопасность, простое управление и высокая скорость."
-        keywords="VPN управление, безопасность, устройства, подписки, кибербезопасность, сеть, шифрование"
-        url="https://cybergateflow.com/"
+        title={SEO_CONSTANTS.PAGES.HOME.title}
+        description={SEO_CONSTANTS.PAGES.HOME.description}
+        keywords={SEO_CONSTANTS.PAGES.HOME.keywords}
+        url={SEO_CONSTANTS.PAGES.HOME.url}
       />
       <div className="min-h-screen">
       {/* Hero Section */}
@@ -19,11 +21,9 @@ const HomePage: React.FC = () => {
         <div className="relative py-20 lg:py-32">
           <div className="text-center max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-3 mb-8">
-              <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
-                <ShieldCheck className="w-8 h-8 text-primary-foreground" />
-              </div>
+              <img src='logo.png' className="w-28 h-28 text-primary-foreground" />
               <h1 className="text-5xl lg:text-7xl font-bold text-primary">
-                CyberGate Flow
+                VibibayVPN
               </h1>
             </div>
             
@@ -34,21 +34,28 @@ const HomePage: React.FC = () => {
             <p className="text-xl lg:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto">
               Безопасное подключение, простое управление и полный контроль над вашими устройствами в одной платформе.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center h-14">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-full group">
-                <Link to="/auth/register">
-                  Начать бесплатно
-                  <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-full group">
-                <Link to="/auth/login">
-                  <Play className="w-6 h-6 transition-transform group-hover:scale-105" />
-                  Войти в систему
-                </Link>
-              </Button>
-            </div>
+            <div className='space-y-4'>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 w-full sm:w-auto group">
+                  <Link to="/auth/register">
+                    Начать бесплатно
+                    <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-14 w-full sm:w-auto group">
+                  <Link to="/auth/login">
+                    <Play className="w-6 h-6 transition-transform group-hover:scale-105" />
+                    Войти в систему
+                  </Link>
+                </Button>
+              </div>
+              <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-14 w-full sm:w-auto group">
+                  <Link to="https://t.me/VibibayVPNBot">
+                    <Telegram className="!w-6 !h-6 transition-transform group-hover:scale-105" />
+                    Продолжить в Telegram
+                  </Link>
+                </Button>
+           </div>
           </div>
         </div>
       </section>
@@ -58,7 +65,7 @@ const HomePage: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h3 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Почему выбирают CyberGate Flow?
+              Почему выбирают VibibayVPN?
             </h3>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Наша платформа предоставляет все необходимые инструменты для безопасного и эффективного управления VPN устройствами
@@ -98,24 +105,22 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="py-20">
         <div className="bg-card backdrop-blur-sm rounded-3xl p-12 text-center border border-border">
           <h3 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
             Готовы начать?
           </h3>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Присоединяйтесь к тысячам пользователей, которые уже доверяют CyberGate Flow для защиты своей приватности.
+            Присоединяйтесь к тысячам пользователей, которые уже доверяют VibibayVPN для защиты своей приватности.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center h-14">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-full group">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 w-full sm:w-auto group">
               <Link to="/auth/register">
                 Создать аккаунт
                 <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-full group">
+            <Button asChild variant="outline" size="lg" className="border-border text-foreground hover:bg-secondary text-lg h-14 w-full sm:w-auto group">
               <Link to="/auth/login">
                 <Play className="w-6 h-6 transition-transform group-hover:scale-105" />
                 Войти в систему

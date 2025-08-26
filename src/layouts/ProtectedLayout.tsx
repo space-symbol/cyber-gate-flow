@@ -4,7 +4,7 @@ import { useUser, useLogout } from '@/hooks/use-api';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Shield, LogOut, User, Settings, Bell } from 'lucide-react';
+import { LogOut, User, Settings, Bell } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { UserInfo } from '@/lib/api/types';
 
@@ -58,11 +58,9 @@ const ProtectedLayout: React.FC = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Shield className="w-4 h-4 text-primary-foreground" />
-              </div>
+              <img src='/logo.png' className="w-8 h-8" />
               <span className="text-xl font-bold text-primary">
-                CyberGate Flow
+                VibibayVPN
               </span>
             </div>
 

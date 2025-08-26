@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Mail, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useLogin, useRegister } from '@/hooks/use-api';
 import type { UserInfo } from '@/lib/api/types';
 
@@ -89,7 +89,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onOpenChange, onAuthSucce
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
-                <Shield className="w-4 h-4 text-primary-foreground" />
+                <img src="/logo.png" className="w-4 h-4 text-primary-foreground" />
               </div>
               <span className="text-foreground">VPN Manager</span>
             </div>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SEO_CONSTANTS } from '@/lib/seo-constants';
 
 interface SEOHeadProps {
   title?: string;
@@ -12,15 +13,15 @@ interface SEOHeadProps {
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'CyberGate Flow - Управление VPN устройствами и подписками',
-  description = 'Современное приложение для управления VPN устройствами, подписками и безопасными подключений. Контролируйте статус подключений, добавляйте новые устройства.',
-  keywords = 'VPN, безопасность, устройства, подписки, управление, кибербезопасность, сеть',
-  image = '/og-image.jpg',
-  url = 'https://cybergateflow.com/',
-  type = 'website',
+  title = SEO_CONSTANTS.PAGES.HOME.title,
+  description = SEO_CONSTANTS.PAGES.HOME.description,
+  keywords = SEO_CONSTANTS.PAGES.HOME.keywords,
+  image = SEO_CONSTANTS.OPEN_GRAPH.image,
+  url = SEO_CONSTANTS.PAGES.HOME.url,
+  type = SEO_CONSTANTS.OPEN_GRAPH.type,
   canonical
 }) => {
-  const fullTitle = title.includes('CyberGate Flow') ? title : `${title} | CyberGate Flow`;
+  const fullTitle = title.includes(SEO_CONSTANTS.SITE_NAME) ? title : `${title} | ${SEO_CONSTANTS.SITE_NAME}`;
   const canonicalUrl = canonical || url;
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
+      <meta name="robots" content="index, follow" />
       
       {/* Canonical URL */}
       <link rel="canonical" href={canonicalUrl} />
@@ -45,19 +47,15 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="CyberGate Flow" />
-      <meta property="og:locale" content="ru_RU" />
+      <meta property="og:site_name" content={SEO_CONSTANTS.OPEN_GRAPH.siteName} />
+      <meta property="og:locale" content={SEO_CONSTANTS.OPEN_GRAPH.locale} />
       
       {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:card" content={SEO_CONSTANTS.TWITTER.card} />
       <meta property="twitter:url" content={url} />
       <meta property="twitter:title" content={fullTitle} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={image} />
-      
-      {/* Additional Meta Tags */}
-      <meta name="robots" content="index, follow" />
-      <meta name="language" content="Russian" />
     </Helmet>
   );
 };

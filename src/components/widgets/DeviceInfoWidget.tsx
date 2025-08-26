@@ -25,7 +25,7 @@ const DeviceInfoWidget: React.FC<DeviceInfoWidgetProps> = ({ device }) => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
+      transition: { duration: 0.4, ease: "easeOut" as const }
     }
   };
 
@@ -34,7 +34,7 @@ const DeviceInfoWidget: React.FC<DeviceInfoWidgetProps> = ({ device }) => {
     visible: {
       scale: 1,
       rotate: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { duration: 0.5, ease: "easeOut" as const }
     }
   };
 

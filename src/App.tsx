@@ -24,7 +24,11 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+
             <Route path="/" element={<MainLayout />}>
+              <Route path="/devices" element={<ProtectedLayout />}>
+                <Route index element={<DevicesPage />} />
+              </Route>
               <Route index element={<HomePage />} />
             </Route>
             
@@ -33,9 +37,7 @@ const App = () => (
               <Route path="register" element={<RegisterPage />} />
             </Route>
             
-            <Route path="/devices" element={<ProtectedLayout />}>
-              <Route index element={<DevicesPage />} />
-            </Route>
+        
             
             <Route path="*" element={<MainLayout />}>
               <Route index element={<NotFound />} />

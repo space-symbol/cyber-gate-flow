@@ -3,10 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useLogin } from '@/hooks/use-api';
 import { useToast } from '@/hooks/use-toast';
 import SEOHead from '@/components/SEOHead';
+import { SEO_CONSTANTS } from '@/lib/seo-constants';
 
 const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,10 +73,10 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <SEOHead 
-        title="Вход в систему - CyberGate Flow"
-        description="Войдите в свой аккаунт CyberGate Flow для управления VPN устройствами и подписками. Безопасный доступ к вашим настройкам."
-        keywords="вход, авторизация, VPN, аккаунт, безопасность"
-        url="https://cybergateflow.com/auth/login"
+        title={SEO_CONSTANTS.PAGES.LOGIN.title}
+        description={SEO_CONSTANTS.PAGES.LOGIN.description}
+        keywords={SEO_CONSTANTS.PAGES.LOGIN.keywords}
+        url={SEO_CONSTANTS.PAGES.LOGIN.url}
       />
       <div className="w-full">
       {/* Back button */}
@@ -91,9 +92,6 @@ const LoginPage: React.FC = () => {
 
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Shield className="w-8 h-8 text-primary-foreground" />
-        </div>
         <h1 className="text-2xl font-bold text-foreground mb-2">Добро пожаловать обратно</h1>
         <p className="text-muted-foreground">Войдите в свой аккаунт для продолжения</p>
       </div>
